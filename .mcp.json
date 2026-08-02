@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "davinci-resolve": {
+      "command": "npx",
+      "args": ["-y", "davinci-resolve-mcp", "server"]
+    },
+    "davinci-resolve-advanced": {
+      "command": "npx",
+      "args": ["-y", "-p", "davinci-resolve-mcp", "davinci-resolve-advanced-mcp"]
+    }
+  }
+}
