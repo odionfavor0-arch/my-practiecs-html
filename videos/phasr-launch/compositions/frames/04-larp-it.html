@@ -1,0 +1,191 @@
+<template>
+<div id="root" data-composition-id="04-larp-it">
+  <style>
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      container-type: size;
+      background: transparent;
+    }
+
+    #root .clip { position: absolute; box-sizing: border-box; }
+
+    /* — background ground (full-bleed clip, never #root itself) — */
+    .frame-04-larp-it-bg {
+      inset: 0;
+      background: #FFFFFF;
+    }
+
+    /* — pink glow bloom, centered, behind the text stack — */
+    .frame-04-larp-it-glow {
+      left: 240px;
+      top: 780px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(253, 104, 144, 0.95) 0%,
+        rgba(253, 104, 144, 0.55) 38%,
+        rgba(253, 104, 144, 0) 72%);
+      filter: blur(50px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* — accelerate flourish: expanding ring, last ~1s handoff — */
+    .frame-04-larp-it-ring {
+      left: 370px;
+      top: 910px;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      border: 3px solid #FD6890;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* — Scene 1: single confident line, centered — */
+    .frame-04-larp-it-line1 {
+      left: 90px;
+      right: 90px;
+      top: 360px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 900;
+      font-size: 74px;
+      line-height: 1.14;
+      letter-spacing: 0.3px;
+      color: #1A1A1A;
+      text-align: center;
+    }
+
+    /* — Scene 2: asymmetric leftbar block, "reality catches up" in pink — */
+    .frame-04-larp-it-rule {
+      left: 90px;
+      top: 600px;
+      width: 5px;
+      height: 158px;
+      background: #FD6890;
+      transform-origin: top center;
+    }
+    .frame-04-larp-it-line2 {
+      left: 121px;
+      top: 600px;
+      width: 620px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 900;
+      font-size: 58px;
+      line-height: 1.22;
+      color: #1A1A1A;
+      text-align: left;
+    }
+    .frame-04-larp-it-line2 .frame-04-larp-it-pink { color: #FD6890; }
+
+    /* — Scene 3: final beat, continues the left column — */
+    .frame-04-larp-it-line3 {
+      left: 90px;
+      top: 900px;
+      width: 660px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 900;
+      font-size: 62px;
+      line-height: 1.18;
+      color: #1A1A1A;
+      text-align: left;
+    }
+  </style>
+
+  <!-- Track 0: full-bleed ground -->
+  <div class="clip frame-04-larp-it-bg" data-start="0" data-duration="10.261" data-track-index="0"></div>
+
+  <!-- Track 1: pink glow bloom, builds slow then accelerates into the handoff -->
+  <div id="frame-04-larp-it-glow" class="clip frame-04-larp-it-glow" data-start="6.5" data-duration="3.761" data-track-index="1"></div>
+
+  <!-- Track 2: shockwave ring, last ~1s accelerate flourish -->
+  <div id="frame-04-larp-it-ring" class="clip frame-04-larp-it-ring" data-start="9.2" data-duration="1.061" data-track-index="2"></div>
+
+  <!-- Track 3: Scene 1 — "LARPing is deciding who you want to be", persists cumulative -->
+  <div id="frame-04-larp-it-line1" class="clip frame-04-larp-it-line1" data-start="0" data-duration="10.261" data-track-index="3">
+    LARPing is deciding<br>who you want to be
+  </div>
+
+  <!-- Track 4: Scene 2 leftbar rule, draws in with the line -->
+  <div id="frame-04-larp-it-rule" class="clip frame-04-larp-it-rule" data-start="3.0" data-duration="7.261" data-track-index="4"></div>
+
+  <!-- Track 5: Scene 2 — "you just go and do it — reality catches up", pink on the payoff phrase -->
+  <div id="frame-04-larp-it-line2" class="clip frame-04-larp-it-line2" data-start="3.0" data-duration="7.261" data-track-index="5">
+    you just go and do it —<br><span class="frame-04-larp-it-pink">reality catches up</span>
+  </div>
+
+  <!-- Track 6: Scene 3 — final beat, "see that person with total clarity" -->
+  <div id="frame-04-larp-it-line3" class="clip frame-04-larp-it-line3" data-start="6.5" data-duration="3.761" data-track-index="6">
+    see that person<br>with total clarity
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      // Scene 1 — the confident opening line, hero visible well inside the 0.5s floor.
+      tl.fromTo(
+        "#frame-04-larp-it-line1",
+        { opacity: 0, y: 34 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
+        0.04
+      );
+
+      // Scene 2 — leftbar draws in with the second line on its spoken cue, asymmetric column.
+      tl.fromTo(
+        "#frame-04-larp-it-rule",
+        { scaleY: 0 },
+        { scaleY: 1, duration: 0.5, ease: "power3.out" },
+        3.0
+      );
+      tl.fromTo(
+        "#frame-04-larp-it-line2",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        3.08
+      );
+
+      // Scene 3 — the final beat lands, then the glow bloom slowly builds behind it.
+      tl.fromTo(
+        "#frame-04-larp-it-line3",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        6.5
+      );
+      tl.fromTo(
+        "#frame-04-larp-it-glow",
+        { opacity: 0, scale: 0.35 },
+        { opacity: 0.55, scale: 1, duration: 2.5, ease: "power1.inOut" },
+        6.5
+      );
+
+      // Last ~1s — motion accelerates: glow surges toward full-bleed, a shockwave ring
+      // punches out and dissipates, handing the built energy off into Frame 5's whoosh.
+      tl.to(
+        "#frame-04-larp-it-glow",
+        { opacity: 0.85, scale: 1.65, duration: 1.061, ease: "power4.in" },
+        9.2
+      );
+      tl.fromTo(
+        "#frame-04-larp-it-ring",
+        { opacity: 0, scale: 0.5 },
+        { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out" },
+        9.2
+      );
+      tl.to(
+        "#frame-04-larp-it-ring",
+        { opacity: 0, scale: 2.4, duration: 0.811, ease: "power3.in" },
+        9.45
+      );
+
+      window.__timelines["04-larp-it"] = tl;
+    })();
+  </script>
+</div>
+</template>

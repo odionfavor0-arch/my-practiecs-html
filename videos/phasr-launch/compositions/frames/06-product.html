@@ -186,10 +186,10 @@
       <div class="p6-shot-wrap">
         <img src="assets/phasr-app-ui.png" alt="" />
       </div>
-      <div class="p6-tasks-label">Today's tasks</div>
-      <div class="p6-row" id="p6-row1" style="top:448px;"></div>
-      <div class="p6-row" id="p6-row2" style="top:552px;"></div>
-      <div class="p6-row" id="p6-row3" style="top:656px;"></div>
+      <div class="p6-tasks-label clip" data-start="5.3" data-duration="3.404" data-track-index="6">Today's tasks</div>
+      <div class="p6-row clip" id="p6-row1" style="top:448px;" data-start="5.55" data-duration="3.154" data-track-index="7"></div>
+      <div class="p6-row clip" id="p6-row2" style="top:552px;" data-start="6.45" data-duration="2.254" data-track-index="8"></div>
+      <div class="p6-row clip" id="p6-row3" style="top:656px;" data-start="7.35" data-duration="1.354" data-track-index="9"></div>
     </div>
 
     <div class="p6-dot-wrap clip" data-start="2.6" data-duration="6.104" data-track-index="5">
@@ -230,13 +230,13 @@
       /* ---------- Scene 1 (0.0-2.0s): headline kinetic type-in ---------- */
       tl.fromTo(qa(".p6-headline .p6-word"),
         { opacity: 0, y: 26 },
-        { opacity: 1, y: 0, duration: 0.42, ease: "power3.out", stagger: 0.08 },
-        0.1
+        { opacity: 1, y: 0, duration: 0.32, ease: "power3.out", stagger: 0.07 },
+        0.05
       );
       tl.fromTo(q(".p6-brand"),
         { opacity: 0, y: 34, scale: 0.9 },
         { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" },
-        0.5
+        0.42
       );
       tl.fromTo(".p6-bg", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0);
 
