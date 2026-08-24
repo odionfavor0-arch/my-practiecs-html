@@ -21,7 +21,7 @@ music: none — MusicGen blocked by this environment's network egress policy (no
 - scene: Bold kinetic type punches in on a stark white canvas as the narrator opens with the contrarian claim
 - duration: 6.912s
 - transition_in: cut
-- status: outline
+- status: animated
 - voiceover: "Neuroscience says you'll hit your goal faster if you just start LARPing — and Boston College did a study to prove it."
 - src: compositions/frames/01-hook.html
 - type: hook
@@ -37,7 +37,7 @@ Scene 3 (4.6–6.912s): "LARPing" and "Boston College" land in brand pink (the o
 - scene: Two labeled groups face off in a simple split-screen graphic — "I CAN'T" vs "I DON'T"
 - duration: 9.365s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: "There were two groups trying to resist junk food. One group said, 'I can't eat junk food.' The other group said, 'I don't eat junk food.' The second group crushed it."
 - src: compositions/frames/02-experiment.html
 - type: evidence
@@ -53,7 +53,7 @@ Scene 4 (8.2–9.365s): "crushed it" stamps over the pink (right) panel — bold
 - scene: Kinetic text unpacks self-perception theory — identity beats rules
 - duration: 13.803s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: "Because they weren't following a rule — they had an identity to protect. Psychology calls it self-perception theory: you become who you say you are. It's the ones who call themselves runners who are actually runners, actually stacking up the miles."
 - src: compositions/frames/03-why-it-works.html
 - type: reframe
@@ -71,7 +71,7 @@ Scene 4 (10.0–13.803s): thesis holds fully still (the deliberate held beat) wh
 - scene: The definition of LARPing-as-identity-practice, building to the proof beat
 - duration: 10.261s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: "LARPing is deciding who you want to be — you just go and do it, and reality catches up to you. The fastest way to make it stick is seeing that person with total clarity."
 - src: compositions/frames/04-larp-it.html
 - type: bridge
@@ -87,7 +87,7 @@ Scene 3 (6.5–10.261s): "see that person with total clarity" arrives as the fin
 - scene: Three quick flashes of glowing pink-accented silhouette figures — an athlete mid-visualization pose, a founder at a whiteboard, a soldier in formation
 - duration: 5.525s
 - transition_in: cut
-- status: outline
+- status: animated
 - voiceover: "Athletes, founders, military — they all do this. They picture the outcome before it's even happened."
 - src: compositions/frames/05-proof-flashes.html
 - type: proof
@@ -104,7 +104,7 @@ Scene 3 (3.5–5.525s): soldier silhouette in formation stance snaps in on "mili
 - scene: Transition into the real PHASR app UI — goals/tasks populate on screen in real time, a soft pulsing light for the app's assistant presence
 - duration: 8.704s
 - transition_in: crossfade
-- status: outline
+- status: animated
 - voiceover: "That's why I use PHASR: I give it my goals and aspirations, and it gives me daily tasks to do every single day to become the best version of myself."
 - src: compositions/frames/06-product.html
 - asset_candidates: phasr-app-ui.png — real PHASR app UI screenshot ("MY VISION BOARD"), blush-pink panels and rounded cards
@@ -125,7 +125,7 @@ Scene 3 (5.5–8.704s): task-list rows populate one-by-one inside the UI card, e
 - scene: Hard cut to the PHASR logo centered on black, tagline beneath
 - duration: 2.219s
 - transition_in: cut
-- status: outline
+- status: animated
 - voiceover: "So pick who you're becoming. Start today."
 - src: compositions/frames/07-logo.html
 - asset_candidates: phasr-logo.jpeg — PHASR logo, glossy 3D pink swoosh mark, brand signature pink

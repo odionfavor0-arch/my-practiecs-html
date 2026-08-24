@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
     <style>
       * {
         margin: 0;
@@ -12,19 +12,23 @@
       }
       html,
       body {
-        margin: 0;
-        width: 1920px;
-        height: 1080px;
+        width: 1080px;
+        height: 1920px;
         overflow: hidden;
         background: #000;
       }
-      body {
-        font-family: "Inter", sans-serif;
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #FFFFFF;
       }
-      code,
-      pre,
-      .monospace {
-        font-family: "JetBrains Mono", monospace;
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
       }
     </style>
   </head>
@@ -33,27 +37,178 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="10"
-      data-width="1920"
-      data-height="1080"
+      data-duration="56.789"
+      data-width="1080"
+      data-height="1920"
     >
-      
-      
+      <div
+        id="el-01-hook"
+        class="scene"
+        data-composition-id="01-hook"
+        data-composition-src="compositions/frames/01-hook.html"
+        data-start="0"
+        data-duration="7.412"
+        data-track-index="0"
+      ></div>
+      <audio
+        id="el-01-hook-voice"
+        src="assets/voice/01.wav"
+        data-start="0"
+        data-duration="6.912"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
 
-      <!--
-        Add your clips here. Example:
-        <div id="title" class="clip" data-start="0" data-duration="5" data-track-index="1"
-             style="font-size: 64px; color: #fff; padding: 40px">
-          Hello World
-        </div>
-      -->
+      <div
+        id="el-02-experiment"
+        class="scene"
+        data-composition-id="02-experiment"
+        data-composition-src="compositions/frames/02-experiment.html"
+        data-start="6.912"
+        data-duration="9.865"
+        data-track-index="1"
+      ></div>
+      <audio
+        id="el-02-experiment-voice"
+        src="assets/voice/02.wav"
+        data-start="6.912"
+        data-duration="9.365"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-03-why-it-works"
+        class="scene"
+        data-composition-id="03-why-it-works"
+        data-composition-src="compositions/frames/03-why-it-works.html"
+        data-start="16.277"
+        data-duration="14.303"
+        data-track-index="0"
+      ></div>
+      <audio
+        id="el-03-why-it-works-voice"
+        src="assets/voice/03.wav"
+        data-start="16.277"
+        data-duration="13.803"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-04-larp-it"
+        class="scene"
+        data-composition-id="04-larp-it"
+        data-composition-src="compositions/frames/04-larp-it.html"
+        data-start="30.080000000000002"
+        data-duration="10.261"
+        data-track-index="1"
+      ></div>
+      <audio
+        id="el-04-larp-it-voice"
+        src="assets/voice/04.wav"
+        data-start="30.080000000000002"
+        data-duration="10.261"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-05-proof-flashes"
+        class="scene"
+        data-composition-id="05-proof-flashes"
+        data-composition-src="compositions/frames/05-proof-flashes.html"
+        data-start="40.341"
+        data-duration="6.025"
+        data-track-index="0"
+      ></div>
+      <audio
+        id="el-05-proof-flashes-voice"
+        src="assets/voice/05.wav"
+        data-start="40.341"
+        data-duration="5.525"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-06-product"
+        class="scene"
+        data-composition-id="06-product"
+        data-composition-src="compositions/frames/06-product.html"
+        data-start="45.866"
+        data-duration="8.704"
+        data-track-index="1"
+      ></div>
+      <audio
+        id="el-06-product-voice"
+        src="assets/voice/06.wav"
+        data-start="45.866"
+        data-duration="8.704"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div
+        id="el-07-logo"
+        class="scene"
+        data-composition-id="07-logo"
+        data-composition-src="compositions/frames/07-logo.html"
+        data-start="54.57"
+        data-duration="2.219"
+        data-track-index="0"
+      ></div>
+      <audio
+        id="el-07-logo-voice"
+        src="assets/voice/07.wav"
+        data-start="54.57"
+        data-duration="2.219"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <!-- SFX -->
+      <audio
+        id="el-sfx-0"
+        src="assets/sfx/riser.mp3"
+        data-start="0"
+        data-duration="10.03"
+        data-track-index="20"
+        data-volume="0.35"
+      ></audio>
+      <audio
+        id="el-sfx-1"
+        src="assets/sfx/whoosh.mp3"
+        data-start="30.08"
+        data-duration="0.57"
+        data-track-index="21"
+        data-volume="0.35"
+      ></audio>
+      <audio
+        id="el-sfx-2"
+        src="assets/sfx/chime.mp3"
+        data-start="45.866"
+        data-duration="2.5"
+        data-track-index="22"
+        data-volume="0.35"
+      ></audio>
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
-      const tl = gsap.timeline({ paused: true });
-      // Example: tl.from("#title", { opacity: 0, y: -50, duration: 1 }, 0);
-      window.__timelines["main"] = tl;
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      // ── frame transitions (injected by transitions.mjs) ──
+      (function () { var tl = window.__timelines["main"];
+        tl.to("#el-01-hook", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 6.912);
+        tl.fromTo("#el-02-experiment", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 6.912);
+        tl.to("#el-02-experiment", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 16.277);
+        tl.fromTo("#el-03-why-it-works", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 16.277);
+        tl.to("#el-03-why-it-works", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 30.08);
+        tl.fromTo("#el-04-larp-it", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 30.08);
+        tl.to("#el-05-proof-flashes", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 45.866);
+        tl.fromTo("#el-06-product", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 45.866);
+        tl.to({}, { duration: 56.789 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
+      })();
     </script>
   </body>
 </html>

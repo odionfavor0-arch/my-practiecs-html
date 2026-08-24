@@ -27,6 +27,8 @@
       top: 560px;
       left: 0;
       width: 1080px;
+    }
+    .p6-headline-inner {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -62,7 +64,7 @@
       font-size: 32px;
       font-weight: 800;
       letter-spacing: 6px;
-      color: #FD6890;
+      color: #953D55;
     }
 
     /* ---------- app UI card (Scene 2) ---------- */
@@ -106,7 +108,7 @@
       font-size: 20px;
       font-weight: 700;
       letter-spacing: 3px;
-      color: #FD6890;
+      color: #F2648A;
       text-transform: uppercase;
     }
 
@@ -165,19 +167,21 @@
     }
   </style>
 
-  <div id="root" data-composition-id="06-product">
+  <div id="root" data-composition-id="06-product" data-start="0" data-duration="8.704" data-width="1080" data-height="1920">
     <div class="p6-bg clip" data-start="0" data-duration="8.704" data-track-index="0"></div>
 
     <div class="p6-dim clip" data-start="2.0" data-duration="6.704" data-track-index="1"></div>
 
     <div class="p6-headline clip" data-start="0" data-duration="2.4" data-track-index="2">
-      <div class="p6-line1">
-        <span class="p6-word">That's</span>
-        <span class="p6-word">why</span>
-        <span class="p6-word">I</span>
-        <span class="p6-word">use</span>
+      <div class="p6-headline-inner">
+        <div class="p6-line1">
+          <span class="p6-word">That's</span>
+          <span class="p6-word">why</span>
+          <span class="p6-word">I</span>
+          <span class="p6-word">use</span>
+        </div>
+        <div class="p6-brand">PHASR</div>
       </div>
-      <div class="p6-brand">PHASR</div>
     </div>
 
     <div class="p6-tag clip" data-start="2.3" data-duration="6.404" data-track-index="3">PHASR</div>
@@ -198,7 +202,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/vendor/gsap.min.js"></script>
   <script>
     (function () {
       var scope = document.querySelector('[data-composition-id="06-product"]');
@@ -241,7 +245,8 @@
       tl.fromTo(".p6-bg", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0);
 
       /* headline holds, then fades as the card takes over */
-      tl.to(".p6-headline", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 1.9);
+      tl.to(".p6-headline-inner", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 1.9);
+      tl.set(".p6-headline-inner", { opacity: 0 }, 2.3);
       tl.fromTo(".p6-tag",
         { opacity: 0, y: -12 },
         { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" },
