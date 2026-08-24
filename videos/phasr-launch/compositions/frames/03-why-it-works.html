@@ -1,0 +1,245 @@
+<template>
+  <style>
+        /* Root: styled by #root only — never a class on the data-composition-id element. */
+        #root {
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          container-type: size;
+          font-family: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+          color: #1a1a1a;
+        }
+
+        /* full-bleed ground lives on a class="clip" layer, never on #root itself */
+        #wiw03-bg {
+          position: absolute;
+          inset: 0;
+          background: #ffffff;
+        }
+
+        #wiw03-top-block {
+          position: absolute;
+          left: 4.6cqw;
+          top: 31cqh;
+          width: 78cqw;
+          transform-origin: 50% 50%;
+        }
+
+        .wiw03-line {
+          margin: 0;
+          font-weight: 800;
+          font-size: 5.2cqw;
+          line-height: 1.28;
+          letter-spacing: -0.01em;
+          color: #1a1a1a;
+        }
+        .wiw03-line + .wiw03-line {
+          margin-top: 0.6cqh;
+        }
+
+        .wiw03-label {
+          margin: 2.4cqh 0 0;
+          font-family: ui-monospace, "SF Mono", "Cascadia Code", "Courier New", monospace;
+          font-weight: 600;
+          font-size: 2.0cqw;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(26, 26, 26, 0.72);
+        }
+
+        .wiw03-char {
+          display: inline-block;
+          will-change: transform, opacity;
+        }
+
+        #wiw03-thesis-stage {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        #wiw03-thesis-lines {
+          width: 84cqw;
+          text-align: center;
+          transform-origin: 50% 50%;
+          will-change: transform, filter, opacity;
+        }
+
+        .wiw03-thesis-line {
+          margin: 0.4cqh 0;
+          font-weight: 900;
+          font-size: 10.5cqw;
+          line-height: 0.98;
+          letter-spacing: -0.01em;
+          color: #fd6890;
+          white-space: nowrap;
+        }
+
+        #wiw03-caption-line {
+          position: absolute;
+          left: 0;
+          top: 63cqh;
+          width: 100%;
+          text-align: center;
+          font-family: ui-monospace, "SF Mono", "Cascadia Code", "Courier New", monospace;
+          font-weight: 600;
+          font-size: 2.3cqw;
+          letter-spacing: 0.05em;
+          color: #1a1a1a;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="03-why-it-works"
+        data-width="1080"
+        data-height="1920"
+      >
+        <div
+          id="wiw03-bg"
+          class="clip"
+          data-start="0"
+          data-duration="13.803"
+          data-track-index="0"
+        ></div>
+
+        <!-- Scene 1 (0.0-3.0s) + Scene 2 (3.0-6.0s): the setup, typed on then labeled,
+             recedes as one group at the cut into the thesis. -->
+        <div
+          id="wiw03-top-block"
+          class="clip"
+          data-start="0"
+          data-duration="6.0"
+          data-track-index="1"
+        >
+          <div class="wiw03-line" id="wiw03-line1">Not a rule.</div>
+          <div class="wiw03-line" id="wiw03-line2">An identity to protect.</div>
+          <div class="wiw03-label" id="wiw03-label2">Psychology calls it self-perception theory</div>
+        </div>
+
+        <!-- Scene 3 (6.0-10.0s) + Scene 4 (10.0-13.803s): the thesis arrives dead-center,
+             then holds fully still through the close. -->
+        <div
+          id="wiw03-thesis-stage"
+          class="clip"
+          data-start="6.0"
+          data-duration="7.803"
+          data-track-index="2"
+        >
+          <div id="wiw03-thesis-lines">
+            <div class="wiw03-thesis-line">you become</div>
+            <div class="wiw03-thesis-line">who you say</div>
+            <div class="wiw03-thesis-line">you are</div>
+          </div>
+        </div>
+
+        <div
+          id="wiw03-caption-line"
+          class="clip"
+          data-start="10.0"
+          data-duration="3.803"
+          data-track-index="3"
+        >
+          runners who are actually runners
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        (function () {
+          // deterministic per-character split for the type-on beats — no randomness, no timers
+          function splitChars(el) {
+            var text = el.textContent;
+            el.textContent = "";
+            var spans = [];
+            for (var i = 0; i < text.length; i++) {
+              var ch = text[i];
+              var span = document.createElement("span");
+              span.className = "wiw03-char";
+              span.textContent = ch === " " ? " " : ch;
+              el.appendChild(span);
+              spans.push(span);
+            }
+            return spans;
+          }
+
+          var line1Chars = splitChars(document.getElementById("wiw03-line1"));
+          var line2Chars = splitChars(document.getElementById("wiw03-line2"));
+          var label2 = document.getElementById("wiw03-label2");
+          var topBlock = document.getElementById("wiw03-top-block");
+          var thesisLines = document.getElementById("wiw03-thesis-lines");
+          var captionLine = document.getElementById("wiw03-caption-line");
+
+          window.__timelines = window.__timelines || {};
+          var tl = gsap.timeline({ paused: true });
+
+          // Scene 1 — "Not a rule." types on (beat 1)
+          tl.fromTo(
+            line1Chars,
+            { opacity: 0, x: -6 },
+            { opacity: 1, x: 0, duration: 0.16, stagger: 0.032, ease: "power1.out" },
+            0.15
+          );
+
+          // Scene 1 — "An identity to protect." types on (beat 2)
+          tl.fromTo(
+            line2Chars,
+            { opacity: 0, x: -6 },
+            { opacity: 1, x: 0, duration: 0.16, stagger: 0.026, ease: "power1.out" },
+            1.3
+          );
+
+          // Scene 2 — the label fades up beneath, on its VO cue
+          tl.fromTo(
+            label2,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+            3.0
+          );
+
+          // Seam: inverse zoom-through — the setup recedes away from the viewer as the
+          // thesis arrives oversized and retracts into place (arrival/payoff beat).
+          // Phase 1 — exit: outgoing recedes (scale + blur share power3.in; opacity is a
+          // separate linear tween so the dimming reads even).
+          tl.to(
+            topBlock,
+            { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" },
+            5.8
+          );
+          tl.to(topBlock, { opacity: 0.15, duration: 0.2, ease: "none" }, 5.8);
+
+          // Phase 2 — hard cut at peak blur/velocity: outgoing vanishes, incoming lands
+          // oversized mid-recede (same values on both sides of the cut) with its −4°
+          // brand tilt set once, for good.
+          tl.set(topBlock, { opacity: 0 }, 6.0);
+          tl.set(
+            thesisLines,
+            { rotation: -4, scale: 1.25, opacity: 0.15, filter: "blur(10px)" },
+            6.0
+          );
+
+          // Phase 3 — entry: the thesis retracts into the focal plane. Rotation is left
+          // untouched here so the −4° brand tilt persists through the hold.
+          tl.to(
+            thesisLines,
+            { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" },
+            6.0
+          );
+          // thesisLines receives no further tweens after 6.5s — it holds fully still
+          // through the rest of the frame, per the held-climax direction.
+
+          // Scene 4 — the quiet caption line arrives late, beneath the still thesis
+          tl.fromTo(
+            captionLine,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+            10.0
+          );
+
+          window.__timelines["03-why-it-works"] = tl;
+        })();
+      </script>
+</template>
