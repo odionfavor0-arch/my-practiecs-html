@@ -216,6 +216,8 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
     <p>Put the English name into Google Translate, copy the Chinese, and search with it. Try 2–3 variations (for example "posture corrector" might be 矫姿带 or 驼背矫正带).</p>
     <h3>Pick a supplier</h3>
     <p>Prefer listings showing 实力商家 (verified strong merchant) or 源头工厂 (source factory), a long store age, high repeat-purchase rate (回头率) and real buyer photos. Very cheap listings for the same item are often thinner material or a smaller size, which the sample will reveal.</p>
+    <h3>Batch it with 1688-cli</h3>
+    <p>On the Windows laptop (1688 blocks cloud logins), <code>tools/1688-research.ps1</code> searches every candidate from the research sheet, pulls full price tiers for the top offers of each, and zips the results. Run it with <code>powershell -ExecutionPolicy Bypass -File .\1688-research.ps1</code> after <code>1688.cmd login</code>. Search results often come back with blank prices, which is why it calls <code>1688.cmd offer</code> on each listing.</p>
     <h3>Record it</h3>
     <p>For each shortlisted listing, save the link, the CNY price at your likely order quantity, MOQ, weight (重量) and dimensions. You'll need weight for freight.</p>
   </div>
