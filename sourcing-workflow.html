@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hybrid Sourcing Playbook</title>
+<meta name="description" content="1688 → Womata → Sky Cargo for samples, CJ for test fulfilment, bulk 1688 for winners. Workflow, CJ matching checklist and cost calculators in naira.">
+<style>
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --ink: #1d1d1b;
+  --muted: #66645e;
+  --line: #e2e0da;
+  --accent: #d6336c;
+  --accent-soft: #fbe4ec;
+  --good: #1f7a4d;
+  --good-soft: #e0f2e8;
+  --bad: #b3261e;
+  --bad-soft: #fbe3e1;
+  --warn-soft: #fff4d6;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151514;
+    --surface: #1f1f1d;
+    --ink: #eeede9;
+    --muted: #a3a19b;
+    --line: #34332f;
+    --accent: #f06595;
+    --accent-soft: #3a1d28;
+    --good: #5fcf94;
+    --good-soft: #17301f;
+    --bad: #ff8a80;
+    --bad-soft: #3a1c1a;
+    --warn-soft: #3a3217;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151514;
+  --surface: #1f1f1d;
+  --ink: #eeede9;
+  --muted: #a3a19b;
+  --line: #34332f;
+  --accent: #f06595;
+  --accent-soft: #3a1d28;
+  --good: #5fcf94;
+  --good-soft: #17301f;
+  --bad: #ff8a80;
+  --bad-soft: #3a1c1a;
+  --warn-soft: #3a3217;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+main { max-width: 880px; margin: 0 auto; padding: 32px 16px 80px; }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 8px; }
+h2 { font-size: 1.3rem; margin: 48px 0 12px; }
+h3 { font-size: 1.05rem; margin: 20px 0 6px; }
+p { margin: 0 0 12px; }
+.lede { color: var(--muted); max-width: 62ch; }
+nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0; }
+nav a {
+  font-size: .85rem; text-decoration: none; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--surface);
+}
+nav a:hover { border-color: var(--accent); }
+.card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 20px;
+}
+.note { background: var(--warn-soft); border-radius: var(--radius); padding: 14px 16px; margin: 16px 0; }
+
+/* Workflow */
+.phases { display: grid; gap: 16px; }
+.phase { border-left: 4px solid var(--accent); }
+.phase header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.phase .tag { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-weight: 600; }
+.phase ol { margin: 8px 0 0; padding-left: 20px; }
+.phase li { margin-bottom: 8px; }
+.phase li small { display: block; color: var(--muted); }
+.gate {
+  font-size: .9rem; background: var(--accent-soft); border-radius: 8px;
+  padding: 8px 12px; margin-top: 12px;
+}
+
+/* Checklist */
+.check { list-style: none; padding: 0; margin: 0; }
+.check li { border-bottom: 1px solid var(--line); padding: 10px 0; display: flex; gap: 10px; }
+.check li:last-child { border-bottom: 0; }
+.check input { margin-top: 5px; accent-color: var(--accent); flex: none; }
+.check label { cursor: pointer; }
+.check small { display: block; color: var(--muted); }
+.score { margin-top: 12px; font-weight: 600; }
+
+/* Calculators */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px 16px; }
+.field label { display: block; font-size: .82rem; color: var(--muted); margin-bottom: 3px; }
+.field input {
+  width: 100%; font: inherit; padding: 8px 10px; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+}
+.field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+fieldset { border: 0; padding: 0; margin: 0 0 18px; }
+legend { font-weight: 600; margin-bottom: 8px; }
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 8px; }
+.stat { background: var(--bg); border-radius: 8px; padding: 12px; }
+.stat span { display: block; font-size: .8rem; color: var(--muted); }
+.stat strong { font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+.stat.good { background: var(--good-soft); }
+.stat.good strong { color: var(--good); }
+.stat.bad { background: var(--bad-soft); }
+.stat.bad strong { color: var(--bad); }
+.verdict { margin-top: 14px; font-weight: 600; }
+.breakdown { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: .92rem; }
+.breakdown td { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.breakdown td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; margin-top: 12px; background: var(--line); }
+.bar div { height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: .8rem; color: var(--muted); margin-top: 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Hybrid sourcing playbook</h1>
+  <p class="lede">Buy one sample from 1688 through Womata, fly it in with Sky Cargo, shoot your own content, test with CJ fulfilment, and only move a product to bulk 1688 stock once the numbers prove it.</p>
+  <nav>
+    <a href="#workflow">Workflow</a>
+    <a href="#find">Finding on 1688</a>
+    <a href="#match">Matching on CJ</a>
+    <a href="#maxprice">Max price calculator</a>
+    <a href="#switch">CJ vs bulk</a>
+  </nav>
+
+  <h2 id="workflow">The workflow</h2>
+  <p>Each phase ends with a gate. Don't spend money on the next phase until the gate is passed.</p>
+
+  <div class="phases">
+    <section class="card phase">
+      <header><h3>Find and price</h3><span class="tag">Phase 1 · Days 1–3</span></header>
+      <ol>
+        <li>Spot the product on TikTok, Instagram or Temu/AliExpress trending lists first, then search for it on 1688.
+          <small>Starting on 1688 means scrolling through millions of listings with no demand signal.</small></li>
+        <li>Shortlist 3 suppliers for the same item and paste each link into Womata.
+          <small>Write down the CNY price, MOQ, product weight and Womata's quote for each.</small></li>
+        <li>Find the matching CJ listing (see checklist below) and note CJ's product + shipping cost to Nigeria.</li>
+        <li>Run both numbers through the max price calculator.</li>
+      </ol>
+      <p class="gate">Gate: the CJ route leaves a profit at your planned selling price after ad cost. If it only works on bulk 1688 pricing, you can't test it cheaply, so skip it.</p>
+    </section>
+
+    <section class="card phase">
+      <header><h3>Sample</h3><span class="tag">Phase 2 · Weeks 1–3</span></header>
+      <ol>
+        <li>Order ONE sample through Womata. If two suppliers look close, order from both and compare.</li>
+        <li>Ship via Sky Cargo. Group several samples into one shipment where you can, since per-kg freight often has a minimum charge.</li>
+        <li>While it's in transit, set up the Shopify product page using the CJ listing and your own copy.</li>
+        <li>When it lands: check build quality against the 1688 photos, weigh it, and note every flaw a customer would complain about.</li>
+      </ol>
+      <p class="gate">Gate: you'd be happy receiving this at your selling price. If not, drop it now. This is the whole reason for the sample.</p>
+    </section>
+
+    <section class="card phase">
+      <header><h3>Content and test</h3><span class="tag">Phase 3 · Weeks 3–6</span></header>
+      <ol>
+        <li>Shoot 10–20 short videos with the sample: unboxing, problem/solution, before/after, the product in a Nigerian home or street setting.</li>
+        <li>Link the Shopify product to the CJ variant so orders auto-route to CJ.</li>
+        <li>Post organically for a week, then put a fixed test budget behind the 2–3 best performers.</li>
+        <li>Track cost per purchase, not views or likes.</li>
+      </ol>
+      <p class="gate">Gate: cost per purchase is at or below the figure you put in the calculator, across at least 10 orders.</p>
+    </section>
+
+    <section class="card phase">
+      <header><h3>Scale to local stock</h3><span class="tag">Phase 4 · When orders are steady</span></header>
+      <ol>
+        <li>Once you're doing roughly 30+ orders a month on one product, run the CJ vs bulk comparison below.</li>
+        <li>Place a first bulk order sized to about 4–6 weeks of sales, not a year's worth.</li>
+        <li>Air freight via Sky Cargo for the first batch (speed), consider sea freight once demand is predictable.</li>
+        <li>Hold stock at home or with a Lagos 3PL and switch the Shopify product to local fulfilment. Keep CJ as backup if you sell out.</li>
+      </ol>
+      <p class="gate">Gate: bulk landed cost beats CJ by enough to cover the cash tied up in stock and the risk of leftover units.</p>
+    </section>
+  </div>
+
+  <div class="note">
+    <strong>The weak spot in this plan is payment.</strong> A large share of Nigerian online shoppers want pay-on-delivery, and CJ can't collect cash for you. During the CJ phase you'll be selling prepaid only (Paystack or Flutterwave on Shopify), with 7–20 day delivery. That will lower your conversion rate compared with sellers offering local stock and pay-on-delivery, so treat CJ-phase results as a floor. A product that sells prepaid with slow shipping will usually do better once it's local.
+  </div>
+
+  <h2 id="find">Finding the product on 1688</h2>
+  <div class="card">
+    <p>1688 is in Chinese and built for Chinese wholesale buyers, so search differently from AliExpress.</p>
+    <h3>Search by image</h3>
+    <p>Take a screenshot of the product from TikTok or AliExpress and use 1688's camera/image search icon in the search bar. This is faster and more accurate than keywords.</p>
+    <h3>Search by Chinese keyword</h3>
+    <p>Put the English name into Google Translate, copy the Chinese, and search with it. Try 2–3 variations (for example "posture corrector" might be 矫姿带 or 驼背矫正带).</p>
+    <h3>Pick a supplier</h3>
+    <p>Prefer listings showing 实力商家 (verified strong merchant) or 源头工厂 (source factory), a long store age, high repeat-purchase rate (回头率) and real buyer photos. Very cheap listings for the same item are often thinner material or a smaller size, which the sample will reveal.</p>
+    <h3>Record it</h3>
+    <p>For each shortlisted listing, save the link, the CNY price at your likely order quantity, MOQ, weight (重量) and dimensions. You'll need weight for freight.</p>
+  </div>
+
+  <h2 id="match">Is the CJ listing the same product?</h2>
+  <div class="card">
+    <p>CJ and 1688 often sell from the same factories, but titles and photos get changed. Tick what matches. Five or more and you can treat it as the same item; below that, request a CJ sample or pick a different listing.</p>
+    <ul class="check" id="matchList">
+      <li><input type="checkbox" id="m1"><label for="m1">Main photo is the same image or the same shoot<small>Run CJ's main image through 1688 image search. The same factory photo turning up is the strongest signal.</small></label></li>
+      <li><input type="checkbox" id="m2"><label for="m2">Weight within about 10%<small>CJ lists weight on every product; compare with 1688's 重量.</small></label></li>
+      <li><input type="checkbox" id="m3"><label for="m3">Same dimensions or sizes</label></li>
+      <li><input type="checkbox" id="m4"><label for="m4">Same colour / variant options</label></li>
+      <li><input type="checkbox" id="m5"><label for="m5">Same material listed</label></li>
+      <li><input type="checkbox" id="m6"><label for="m6">Same packaging (box, bag, inserts)</label></li>
+      <li><input type="checkbox" id="m7"><label for="m7">Same small details: logo placement, stitching, buttons, cable length</label></li>
+      <li><input type="checkbox" id="m8"><label for="m8">CJ price is plausibly 1688 price plus a markup<small>If CJ is cheaper than 1688, it's probably a different, lower-grade version.</small></label></li>
+    </ul>
+    <p class="score" id="matchScore">0 of 8 match.</p>
+    <p>If CJ doesn't stock it at all, use CJ's "Sourcing request" and paste the 1688 link. They'll often list it within a few days.</p>
+  </div>
+
+  <h2 id="maxprice">Maximum price you can pay for the product</h2>
+  <div class="card">
+    <p>Work backwards from your selling price. Everything below is editable, and the shipping defaults are placeholders: check Womata's and Sky Cargo's current rates before relying on the result.</p>
+
+    <fieldset>
+      <legend>Your offer</legend>
+      <div class="grid">
+        <div class="field"><label for="sell">Selling price (₦)</label><input id="sell" type="number" value="25000" min="0"></div>
+        <div class="field"><label for="cpa">Expected ad cost per purchase (₦)</label><input id="cpa" type="number" value="6000" min="0"></div>
+        <div class="field"><label for="profit">Profit you want per order (₦)</label><input id="profit" type="number" value="5000" min="0"></div>
+        <div class="field"><label for="payfee">Payment gateway fee (%)</label><input id="payfee" type="number" value="1.5" min="0" step="0.1"></div>
+        <div class="field"><label for="refund">Refunds / damage allowance (%)</label><input id="refund" type="number" value="5" min="0" step="0.5"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Exchange rates</legend>
+      <div class="grid">
+        <div class="field"><label for="usd">₦ per US$1</label><input id="usd" type="number" value="1550" min="0"></div>
+        <div class="field"><label for="cny">₦ per ¥1 (CNY)</label><input id="cny" type="number" value="215" min="0"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>1688 route costs per unit</legend>
+      <div class="grid">
+        <div class="field"><label for="wfee">Womata service fee (% of goods)</label><input id="wfee" type="number" value="5" min="0" step="0.5"></div>
+        <div class="field"><label for="cndom">China domestic delivery to warehouse (¥ per unit)</label><input id="cndom" type="number" value="3" min="0" step="0.5"></div>
+        <div class="field"><label for="kg">Shipped weight (kg)</label><input id="kg" type="number" value="0.4" min="0" step="0.05"></div>
+        <div class="field"><label for="perkg">Sky Cargo air freight (₦ per kg)</label><input id="perkg" type="number" value="12000" min="0"></div>
+        <div class="field"><label for="local">Local delivery to customer (₦)</label><input id="local" type="number" value="3000" min="0"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>CJ route</legend>
+      <div class="grid">
+        <div class="field"><label for="cjship">CJ shipping to Nigeria (US$ per order)</label><input id="cjship" type="number" value="6" min="0" step="0.5"></div>
+        <div class="field"><label for="cjprod">CJ product price you found (US$)</label><input id="cjprod" type="number" value="4" min="0" step="0.1"></div>
+      </div>
+    </fieldset>
+
+    <div class="results">
+      <div class="stat" id="stBudget"><span>Budget left for product + shipping</span><strong id="budget">–</strong></div>
+      <div class="stat" id="stCjMax"><span>Max CJ product price</span><strong id="cjMax">–</strong></div>
+      <div class="stat" id="stCnyMax"><span>Max 1688 price (bulk, local stock)</span><strong id="cnyMax">–</strong></div>
+    </div>
+    <p class="verdict" id="cjVerdict"></p>
+
+    <div class="bar" id="bar"></div>
+    <div class="legend">
+      <span><i style="background:#868e96"></i>Ads</span>
+      <span><i style="background:#f59f00"></i>Fees + refunds</span>
+      <span><i style="background:#4c6ef5"></i>CJ product + shipping</span>
+      <span><i style="background:#2f9e44"></i>Your profit</span>
+    </div>
+    <p style="margin-top:10px;color:var(--muted);font-size:.9rem">The bar splits your selling price using the CJ product price you entered. A red end means the order loses money.</p>
+  </div>
+
+  <h2 id="switch">When to move from CJ to bulk 1688</h2>
+  <div class="card">
+    <p>Once a product sells steadily, compare what one delivered order costs you each way.</p>
+    <fieldset>
+      <div class="grid">
+        <div class="field"><label for="bcny">1688 bulk unit price (¥)</label><input id="bcny" type="number" value="16" min="0" step="0.5"></div>
+        <div class="field"><label for="bqty">Bulk order quantity</label><input id="bqty" type="number" value="100" min="1"></div>
+        <div class="field"><label for="b3pl">3PL / storage + packing per order (₦)</label><input id="b3pl" type="number" value="800" min="0"></div>
+        <div class="field"><label for="monthly">Orders per month</label><input id="monthly" type="number" value="40" min="0"></div>
+      </div>
+    </fieldset>
+    <p style="color:var(--muted);font-size:.9rem">Uses the exchange rates, Womata fee, weight, freight and local delivery from the calculator above.</p>
+
+    <div class="results">
+      <div class="stat"><span>CJ cost per delivered order</span><strong id="cjOrder">–</strong></div>
+      <div class="stat"><span>Bulk 1688 cost per delivered order</span><strong id="bulkOrder">–</strong></div>
+      <div class="stat" id="stSave"><span>Saving per order</span><strong id="saving">–</strong></div>
+      <div class="stat"><span>Cash tied up in the bulk order</span><strong id="cash">–</strong></div>
+    </div>
+    <table class="breakdown" id="bulkTable"></table>
+    <p class="verdict" id="switchVerdict"></p>
+  </div>
+
+  <footer>
+    All figures are estimates. Exchange rates, Womata fees and Sky Cargo per-kg rates change often, so update them from each company's current quote before you buy. Pay-on-delivery, customs duties on bulk shipments and failed-delivery rates aren't modelled here.
+  </footer>
+</main>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => {
+    const v = parseFloat($(id).value);
+    return isFinite(v) ? v : 0;
+  };
+  const naira = (n) => (n < 0 ? "−₦" : "₦") + Math.round(Math.abs(n)).toLocaleString("en-NG");
+  const usd = (n) => (n < 0 ? "−$" : "$") + Math.abs(n).toFixed(2);
+  const yuan = (n) => (n < 0 ? "−¥" : "¥") + Math.abs(n).toFixed(2);
+
+  function setTone(el, good) {
+    el.classList.remove("good", "bad");
+    el.classList.add(good ? "good" : "bad");
+  }
+
+  function calc() {
+    const sell = num("sell"), cpa = num("cpa"), profit = num("profit");
+    const payfee = num("payfee") / 100, refund = num("refund") / 100;
+    const rUsd = num("usd"), rCny = num("cny");
+    const wfee = num("wfee") / 100, cndom = num("cndom"), kg = num("kg"), perkg = num("perkg"), local = num("local");
+    const cjship = num("cjship"), cjprod = num("cjprod");
+
+    const fees = sell * (payfee + refund);
+    const budget = sell - cpa - profit - fees;
+    $("budget").textContent = naira(budget);
+    setTone($("stBudget"), budget > 0);
+
+    // CJ: product + CJ shipping must fit inside the budget.
+    const cjMaxUsd = rUsd > 0 ? budget / rUsd - cjship : 0;
+    $("cjMax").textContent = usd(cjMaxUsd);
+    setTone($("stCjMax"), cjMaxUsd > 0 && cjprod <= cjMaxUsd);
+
+    // Bulk 1688: goods + Womata fee + China domestic, then freight and local delivery in naira.
+    const freight = kg * perkg;
+    const cnyMax = rCny > 0 ? (budget - freight - local) / (rCny * (1 + wfee)) - cndom / (1 + wfee) : 0;
+    $("cnyMax").textContent = yuan(cnyMax);
+    setTone($("stCnyMax"), cnyMax > 0);
+
+    const cjCost = (cjprod + cjship) * rUsd;
+    const actualProfit = sell - cpa - fees - cjCost;
+    const v = $("cjVerdict");
+    if (budget <= 0) {
+      v.textContent = "Ad cost, fees and your target profit already use up the selling price. Raise the price or find a cheaper way to get a sale.";
+    } else if (cjprod <= cjMaxUsd) {
+      v.textContent = "At " + usd(cjprod) + " the CJ route works: about " + naira(actualProfit) + " profit per order. Good enough to test.";
+    } else {
+      v.textContent = "At " + usd(cjprod) + " the CJ route makes " + naira(actualProfit) + " per order, below your target. Test at a higher price or skip it.";
+    }
+
+    // Bar: ads | fees | CJ cost | profit (or loss).
+    const parts = [
+      { v: cpa, c: "#868e96" },
+      { v: fees, c: "#f59f00" },
+      { v: cjCost, c: "#4c6ef5" },
+      { v: Math.abs(actualProfit), c: actualProfit >= 0 ? "#2f9e44" : "#e03131" }
+    ];
+    const total = parts.reduce((s, p) => s + Math.max(p.v, 0), 0) || 1;
+    $("bar").innerHTML = parts
+      .map((p) => '<div style="width:' + (Math.max(p.v, 0) / total) * 100 + "%;background:" + p.c + '"></div>')
+      .join("");
+
+    // CJ vs bulk comparison.
+    const bcny = num("bcny"), bqty = Math.max(num("bqty"), 1), b3pl = num("b3pl"), monthly = num("monthly");
+    const goods = (bcny * (1 + wfee) + cndom) * rCny;
+    const bulkOrder = goods + freight + b3pl + local;
+    const cjOrder = cjCost;
+    const saving = cjOrder - bulkOrder;
+    const cash = (goods + freight) * bqty;
+
+    $("cjOrder").textContent = naira(cjOrder);
+    $("bulkOrder").textContent = naira(bulkOrder);
+    $("saving").textContent = naira(saving);
+    setTone($("stSave"), saving > 0);
+    $("cash").textContent = naira(cash);
+
+    $("bulkTable").innerHTML =
+      "<tr><td>Goods + Womata fee + China delivery</td><td>" + naira(goods) + "</td></tr>" +
+      "<tr><td>Sky Cargo freight (" + kg + " kg)</td><td>" + naira(freight) + "</td></tr>" +
+      "<tr><td>3PL / packing</td><td>" + naira(b3pl) + "</td></tr>" +
+      "<tr><td>Local delivery</td><td>" + naira(local) + "</td></tr>" +
+      "<tr><td><strong>Bulk cost per order</strong></td><td><strong>" + naira(bulkOrder) + "</strong></td></tr>";
+
+    const sv = $("switchVerdict");
+    const monthsOfStock = monthly > 0 ? bqty / monthly : Infinity;
+    if (saving <= 0) {
+      sv.textContent = "Bulk doesn't beat CJ at these numbers. Stay on CJ, or negotiate a lower 1688 price.";
+    } else {
+      const monthlySaving = saving * monthly;
+      let txt = "Bulk saves " + naira(saving) + " per order, about " + naira(monthlySaving) + " a month at " + monthly + " orders. ";
+      if (monthsOfStock > 2) {
+        txt += bqty + " units is roughly " + monthsOfStock.toFixed(1) + " months of stock, so consider a smaller first order.";
+      } else {
+        txt += "The order covers about " + (isFinite(monthsOfStock) ? monthsOfStock.toFixed(1) : "–") + " months of sales, which is a sensible first batch.";
+      }
+      sv.textContent = txt;
+    }
+  }
+
+  function updateMatch() {
+    const boxes = document.querySelectorAll("#matchList input");
+    const n = Array.from(boxes).filter((b) => b.checked).length;
+    const msg = n >= 5 ? " Likely the same product." : n > 0 ? " Not enough yet to be confident." : "";
+    $("matchScore").textContent = n + " of 8 match." + msg;
+  }
+
+  document.querySelectorAll("input[type=number]").forEach((el) => el.addEventListener("input", calc));
+  document.querySelectorAll("#matchList input").forEach((el) => el.addEventListener("change", updateMatch));
+  calc();
+})();
+</script>
+</body>
+</html>
