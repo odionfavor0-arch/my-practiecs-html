@@ -187,6 +187,27 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
     <p style="margin-top:12px;color:var(--muted);font-size:.85rem">Your edits are saved in this browser only. Download the CSV to keep a copy or open it in Google Sheets.</p>
   </div>
 
+  <h2 id="reseller">Reseller price calculator</h2>
+  <div class="card">
+    <p>Selling in bulk to gadget sellers: no ad cost and no delivery (they collect), but they need room to make their own profit. Bulk freight is cheaper per kg than a single sample, so the freight rate here is separate from the one above. Both are placeholders until Sky Cargo quotes.</p>
+    <div class="btns" style="margin:0 0 14px">
+      <button type="button" data-preset="mic">F11-2 dual mic</button>
+      <button type="button" data-preset="buds">Unbranded earbuds</button>
+    </div>
+    <div class="grid">
+      <div class="field"><label for="w-price">1688 price per unit (₦, as Womata shows it)</label><input id="w-price" type="number" min="0" step="any"></div>
+      <div class="field"><label for="w-fee">Womata fee (%)</label><input id="w-fee" type="number" min="0" step="any"></div>
+      <div class="field"><label for="w-dom">China delivery per unit (₦)</label><input id="w-dom" type="number" min="0" step="any"></div>
+      <div class="field"><label for="w-kg">Weight per unit (kg)</label><input id="w-kg" type="number" min="0" step="any"></div>
+      <div class="field"><label for="w-perkg">Bulk freight (₦ per kg)</label><input id="w-perkg" type="number" min="0" step="any"></div>
+      <div class="field"><label for="w-profit">Your profit per unit (₦)</label><input id="w-profit" type="number" min="0" step="any"></div>
+      <div class="field"><label for="w-retail">What resellers sell it for (₦)</label><input id="w-retail" type="number" min="0" step="any"></div>
+      <div class="field"><label for="w-qty">Units in the bulk order</label><input id="w-qty" type="number" min="1" step="1"></div>
+    </div>
+    <table class="breakdown" id="w-table" style="min-width:0"></table>
+    <p class="verdict" id="w-verdict" style="margin-top:12px;font-weight:600"></p>
+  </div>
+
   <h2>Dropped, and why</h2>
   <div class="card">
     <p>Each of these has real Nigerian demand. They failed on price, because Jumia already sells them for less than the CJ or air-freight route can deliver.</p>
@@ -220,7 +241,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
 
 <script>
 (function () {
-  const STORE = "nd-research-v2";
+  const STORE = "nd-research-v3";
   const $ = (id) => document.getElementById(id);
 
   const DEFAULT_ASSUME = { cny: 215, usd: 1550, wfee: 5, perkg: 12000, local: 3000, cpa: 6000 };
@@ -243,6 +264,15 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
       evidence: "Jumia (29 Sep 2026): 998 wireless lavalier mic listings; a ₦7,999 single mic has 1,115 reviews, the strongest demand signal found. Budget single mics ₦5,900–₦12,960 (K8 type-C ₦8,999–₦17,000). Dual 'wireless lavalier microphone systems' sell for ₦28,800–₦46,500, with one at ₦53,000. Ring light + tripod + mic sets ₦11,699–₦32,000. Meta Ad Library (Nigeria, active, running since before 30 Aug 2026): 'wireless mic' returned only 2 ads, one of them this exact product: shopnhappy.com.ng selling the F11-2 dual wireless mic (3-in-1 receiver, Type-C/Lightning/3.5mm) + free 6.5mm jack adapter. Ad price ₦27,000, landing page ₦22,500, pay on delivery + free delivery, order form asks for name, phone, WhatsApp, address, city, state. Quantity tiers: 1 set ₦22,500, 2 sets ₦44,000, 3 sets ₦63,000. Form asks 'Are you ready to receive in 24–48 hours?' to filter out unserious pay-on-delivery orders. Delivery 24–48 hours Lagos/Ibadan, 2–4 days elsewhere, so they hold local stock. Also offers 'Place order on WhatsApp' and a call-before-ordering number. 1688 (via Womata app, 29 Sep 2026): exact F11-2 listing found, ₦2,612.50–₦3,866.50 per piece depending on variant, MOQ 1, 278 sold, 5.0 rating, source-factory badge. ¥18 used here (the upper ₦3,866.50 converted), pending the 3-in-1 receiver variant price and real weight.",
       angles: "The only long-running competitor uses a static product image and stock/AI photos with technical specs (48kHz, 24-bit, DSP). Beat it with real UGC: a Nigerian creator wearing it, before/after audio test in Lagos traffic, two-person street interview. Why your videos sound bad; two-person interview in a noisy market; 'the mic every Nigerian creator is using'. Film every other product's ads with it too.",
       risks: "The competitor offers pay on delivery and free delivery at ₦22,500, which CJ can't match: this product needs a small local stock (e.g. 20 units) after the sample passes. Only one competitor running 30+ days is thin evidence on its own. Don't compete with the ₦6k–9k single mics: sell the dual tier with a charging case and noise cancelling, and prove it on camera. Lithium batteries: confirm Sky Cargo accepts them. Check the receiver comes in Type-C and Lightning versions."
+    },
+    {
+      id: "earbuds", cat: "electronics", name: "Unbranded TWS wireless earbuds",
+      why: "Everyone wants earbuds; gadget boys resell them for ₦12,000+",
+      jumia: 3, tiktok: 2, insta: 2, meta: null, trend: "", cny: 14, kg: 0.1, cj: null,
+      price: 12000, jmin: null, jmax: null, comp: "high",
+      evidence: "1688 (via Womata, seen 29 Sep 2026): ₦2,000–₦4,000 a pair. A Lagos gadget seller quoted ₦12,000 for similar earbuds. Jumia lists 15,631 headsets, with Oraimo FreePods and SpaceBuds everywhere.",
+      angles: "Better sold to resellers than advertised: see the reseller calculator below. For retail, only as an add-on to a mic order.",
+      risks: "As an ad product the margin is too thin at ₦12,000 once ad cost and delivery are paid. Never buy AirPods lookalikes with Apple branding: they're counterfeit and customs can seize the whole shipment. Oraimo owns the budget end, so resellers need a clear price advantage."
     },
     {
       id: "scalp", cat: "electronics", name: "Electric scalp massager (rechargeable, waterproof)",
@@ -513,6 +543,44 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
+
+  // Reseller calculator
+  const PRESETS = {
+    mic: { price: 3866, fee: 5, dom: 650, kg: 0.3, perkg: 8000, profit: 2000, retail: 15000, qty: 20 },
+    buds: { price: 3000, fee: 5, dom: 650, kg: 0.1, perkg: 8000, profit: 2000, retail: 12000, qty: 30 }
+  };
+  const W = ["price", "fee", "dom", "kg", "perkg", "profit", "retail", "qty"];
+  function wval(k) { const v = parseFloat($("w-" + k).value); return isFinite(v) ? v : 0; }
+  function wcalc() {
+    const goods = wval("price") * (1 + wval("fee") / 100) + wval("dom");
+    const freight = wval("kg") * wval("perkg");
+    const landed = goods + freight;
+    const wholesale = Math.ceil((landed + wval("profit")) / 100) * 100;
+    const theirs = wval("retail") - wholesale;
+    const qty = Math.max(1, Math.round(wval("qty")));
+    $("w-table").innerHTML =
+      "<tr><td>Product + Womata fee + China delivery</td><td>" + naira(goods) + "</td></tr>" +
+      "<tr><td>Bulk freight</td><td>" + naira(freight) + "</td></tr>" +
+      "<tr><td>Your landed cost per unit</td><td>" + naira(landed) + "</td></tr>" +
+      "<tr><td><strong>Your price to resellers</strong></td><td><strong>" + naira(wholesale) + "</strong></td></tr>" +
+      "<tr><td>Reseller's profit per unit</td><td>" + naira(theirs) + "</td></tr>" +
+      "<tr><td>Cash needed for " + qty + " units / your profit if all sell</td><td>" + naira(landed * qty) + " / " + naira(wval("profit") * qty) + "</td></tr>";
+    const share = wval("retail") > 0 ? theirs / wval("retail") : 0;
+    $("w-verdict").textContent = theirs <= 0
+      ? "Resellers can't make money at this price. Lower your profit or find a cheaper supplier."
+      : share < 0.25
+        ? "Resellers keep " + Math.round(share * 100) + "% of their selling price. That's tight: most will want at least 30–40%."
+        : "Resellers keep " + Math.round(share * 100) + "% of their selling price, enough to interest them.";
+  }
+  function wset(name) {
+    const pr = PRESETS[name];
+    W.forEach((k) => { $("w-" + k).value = pr[k]; });
+    document.querySelectorAll("[data-preset]").forEach((b) => b.classList.toggle("primary", b.dataset.preset === name));
+    wcalc();
+  }
+  W.forEach((k) => $("w-" + k).addEventListener("input", wcalc));
+  document.querySelectorAll("[data-preset]").forEach((b) => b.addEventListener("click", () => wset(b.dataset.preset)));
+  wset("mic");
 
   document.querySelectorAll("#chips button").forEach((b) => b.addEventListener("click", () => {
     catFilter = b.dataset.cat;
