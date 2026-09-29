@@ -72,6 +72,8 @@ td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .pill.good { background: var(--good-soft); color: var(--good); }
 .pill.mid { background: var(--mid-soft); color: var(--mid); }
 .pill.bad { background: var(--bad-soft); color: var(--bad); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+.chips button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .dots { letter-spacing: 1px; color: var(--accent); white-space: nowrap; }
 .dots i { color: var(--line); font-style: normal; }
 .sub { display: block; color: var(--muted); font-size: .8rem; }
@@ -87,23 +89,33 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
 <body>
 <main>
   <h1>Product research sheet</h1>
-  <p class="lede">Demand first, supplier second. Every candidate gets scored on evidence from each step of the funnel, then checked against what the same thing already costs in Nigeria.</p>
+  <p class="lede">Find products in food, electronics and fashion, prove Nigerians want them, narrow to eight, and only then source them. Every candidate is scored on Nigerian demand evidence and checked against what it already costs locally.</p>
   <div class="funnel">
-    <span>Amazon</span><b>→</b><span>TikTok</span><b>→</b><span>Meta Ad Library</span><b>→</b><span>Google Trends</span><b>→</b><span>1688</span><b>→</b><span>Nigerian price</span><b>→</b><span>Sample</span><b>→</b><span>Ad test</span>
+    <span>1 · Find: food, electronics, fashion</span><b>→</b><span>2 · Nigerian demand: Jumia, TikTok, Instagram, Meta, Trends</span><b>→</b><span>3 · Narrow to 8</span><b>→</b><span>4 · Source: 1688 + CJ</span><b>→</b><span>5 · Compare economics</span>
   </div>
   <p style="margin-top:12px"><a href="sourcing-workflow.html">Back to the sourcing playbook</a></p>
 
   <div class="note">
-    <strong>What the first pass found:</strong> most "TikTok made me buy it" gadgets are already on Jumia for ₦5,000–₦16,000, with 100–250 competing listings each. With CJ shipping and ₦5,000–₦8,000 ad cost per sale, you need to charge roughly ₦22,000+ to make money. So the extra filter for Nigeria is: <em>what's the cheapest price a customer can already find this for locally?</em> If Jumia or Balogun market sells it for half your price, international demand doesn't matter.
+    <strong>The shortlist below is Step 3 done with the evidence available.</strong> Jumia prices and review counts are in for all eight. TikTok and Instagram scores are my judgement from what's visible publicly, not measured. Meta Ad Library and Google Trends (Nigeria) are still blank: those are the two checks to do by hand before Step 4.
+  </div>
+  <div class="note">
+    <strong>What Jumia keeps showing:</strong> most "TikTok made me buy it" gadgets are already on Jumia for ₦5,000–₦16,000, with 100–250 competing listings each. With CJ shipping and ₦5,000–₦8,000 ad cost per sale, you need to charge roughly ₦22,000+ to make money. So the extra filter for Nigeria is: <em>what's the cheapest price a customer can already find this for locally?</em> If Jumia or Balogun market sells it for half your price, international demand doesn't matter. Two ways through: products with a big gap between China cost and Nigerian price (the projector, wigs), or bundles that no single Jumia listing matches (creator kit, air fryer kit).
   </div>
 
-  <h2>Candidates</h2>
+  <h2>Shortlist</h2>
+  <div class="chips" id="chips">
+    <button type="button" data-cat="" aria-pressed="true">All</button>
+    <button type="button" data-cat="food" aria-pressed="false">Food</button>
+    <button type="button" data-cat="electronics" aria-pressed="false">Electronics</button>
+    <button type="button" data-cat="fashion" aria-pressed="false">Fashion</button>
+  </div>
   <p style="color:var(--muted);font-size:.9rem">Tap a row to see the evidence and edit it. Tap a column header to sort.</p>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
           <th data-k="name">Product</th>
+          <th data-k="cat">Category</th>
           <th data-k="demand">Demand</th>
           <th data-k="jumiaMax">Jumia price</th>
           <th data-k="price">Your price</th>
@@ -126,15 +138,19 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
     <div class="grid">
       <div class="field wide"><label for="f-name">Product</label><input id="f-name" required></div>
       <div class="field wide"><label for="f-why">Why people buy it</label><input id="f-why"></div>
-      <div class="field"><label for="f-amazon">Amazon / international (0–3)</label><select id="f-amazon"></select></div>
-      <div class="field"><label for="f-tiktok">TikTok interest (0–3)</label><select id="f-tiktok"></select></div>
-      <div class="field"><label for="f-meta">Meta ads running (0–3)</label><select id="f-meta"></select></div>
-      <div class="field"><label for="f-trend">Google Trends, 90 days</label>
+      <div class="field"><label for="f-cat">Category</label>
+        <select id="f-cat"><option value="food">Food</option><option value="electronics">Electronics</option><option value="fashion">Fashion</option></select></div>
+      <div class="field"><label for="f-jumia">Jumia demand: reviews, listings (0–3)</label><select id="f-jumia"></select></div>
+      <div class="field"><label for="f-tiktok">TikTok, Nigerian creators (0–3)</label><select id="f-tiktok"></select></div>
+      <div class="field"><label for="f-insta">Instagram vendors (0–3)</label><select id="f-insta"></select></div>
+      <div class="field"><label for="f-meta">Meta ads running in NG (0–3)</label><select id="f-meta"></select></div>
+      <div class="field"><label for="f-trend">Google Trends Nigeria, 90 days</label>
         <select id="f-trend"><option value="">Not checked</option><option value="up">Rising ↑</option><option value="flat">Stable →</option><option value="down">Falling ↓</option></select></div>
       <div class="field"><label for="f-cny">1688 price (¥)</label><input id="f-cny" type="number" min="0" step="any"></div>
       <div class="field"><label for="f-kg">Weight (kg)</label><input id="f-kg" type="number" min="0" step="any"></div>
       <div class="field"><label for="f-cj">CJ price incl. shipping to NG (US$)</label><input id="f-cj" type="number" min="0" step="any"></div>
       <div class="field"><label for="f-price">Your Nigerian selling price (₦)</label><input id="f-price" type="number" min="0" step="any"></div>
+      <div class="field"><label for="f-cpa">Ad cost per sale for this product (₦, blank = default)</label><input id="f-cpa" type="number" min="0" step="any"></div>
       <div class="field"><label for="f-jmin">Cheapest on Jumia (₦)</label><input id="f-jmin" type="number" min="0" step="any"></div>
       <div class="field"><label for="f-jmax">Typical upper Jumia price (₦)</label><input id="f-jmax" type="number" min="0" step="any"></div>
       <div class="field"><label for="f-comp">Local competition</label>
@@ -166,105 +182,122 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
     </details>
     <div class="btns">
       <button type="button" id="exportBtn">Download CSV</button>
-      <button type="button" id="resetBtn">Reset to first-pass data</button>
+      <button type="button" id="resetBtn">Reset to shortlist data</button>
     </div>
     <p style="margin-top:12px;color:var(--muted);font-size:.85rem">Your edits are saved in this browser only. Download the CSV to keep a copy or open it in Google Sheets.</p>
   </div>
 
+  <h2>Dropped, and why</h2>
+  <div class="card">
+    <p>Each of these has real Nigerian demand. They failed on price, because Jumia already sells them for less than the CJ or air-freight route can deliver.</p>
+    <table class="breakdown" style="min-width:0">
+      <tr><td>Electric lint remover</td><td>₦3,989–₦8,894 on Jumia, 124 listings</td></tr>
+      <tr><td>Portable blender</td><td>₦7,776–₦15,768, top listing 246 reviews, Oraimo competes</td></tr>
+      <tr><td>Rechargeable neck fan</td><td>₦6,883–₦16,899, 128 listings</td></tr>
+      <tr><td>Cordless car vacuum</td><td>From ₦6,480, 229 listings, heavy to fly</td></tr>
+      <tr><td>Heatless hair curler</td><td>₦5,880–₦11,999</td></tr>
+      <tr><td>Solar emergency bulb</td><td>₦4,560–₦18,000, battery plus solar panel adds weight</td></tr>
+      <tr><td>Men's Cuban chain</td><td>₦2,799–₦15,008</td></tr>
+      <tr><td>Mini crossbody bag</td><td>2,031 listings, from ₦2,880</td></tr>
+      <tr><td>Galaxy star projector, UV toothbrush sanitiser</td><td>Swapped for the HY300 video projector, which has a far bigger price gap</td></tr>
+    </table>
+  </div>
+
   <h2>How the score works</h2>
   <div class="card">
-    <p>Demand is Amazon + TikTok + Meta (0–3 each) plus Google Trends (rising 3, stable 2, falling 0). That's up to 12.</p>
-    <p>Margin adds up to 5: after landed cost and ad cost, 30%+ of the selling price left scores 5, 20% scores 3, 10% scores 1. Competition adds 3 for low, 2 for medium, 0 for high.</p>
+    <p>Demand is Jumia + TikTok + Instagram + Meta (0–3 each) plus Google Trends Nigeria (rising 3, stable 2, falling 0). That's up to 15.</p>
+    <p>Margin adds up to 5: after landed cost and ad cost, 30%+ of the selling price left scores 5, 20% scores 3, 10% scores 1. Competition adds 3 for low, 2 for medium, 0 for high. Total is out of 23, and 17+ with no missing data means "Order sample".</p>
     <p>One hard rule overrides the score: if your price is more than 1.5× the typical Jumia price, the verdict is "Jumia undercuts" no matter how strong demand looks. Nigerian shoppers compare.</p>
   </div>
 
-  <footer>First pass researched 29 September 2026. Jumia prices come from jumia.com.ng search listings on that date. Google Trends, 1688 and Meta Ad Library weren't reachable from the research environment, so those fields are marked "not checked" and need filling in by hand.</footer>
+  <footer>Researched 29 September 2026. Jumia prices and review counts come from jumia.com.ng search listings on that date. The HY300 1688 price comes from a 1688 wholesale guide (from ¥59) and Alibaba listings (about US$20); every other 1688 price is still to be looked up. Google Trends and Meta Ad Library weren't reachable from the research environment.</footer>
 </main>
 
 <script>
 (function () {
-  const STORE = "nd-research-v1";
+  const STORE = "nd-research-v2";
   const $ = (id) => document.getElementById(id);
 
   const DEFAULT_ASSUME = { cny: 215, usd: 1550, wfee: 5, perkg: 12000, local: 3000, cpa: 6000 };
 
   const SEED = [
     {
-      id: "scalp", name: "Electric scalp massager (rechargeable, waterproof)",
-      why: "Scalp care, hair growth routines, applying hair oil evenly, relaxation gift",
-      amazon: 2, tiktok: 2, meta: null, trend: "", cny: null, kg: 0.35, cj: null,
+      id: "hy300", cat: "electronics", name: "HY300 mini smart projector",
+      why: "Big-screen films and football in a bedroom for a fraction of a TV's price",
+      jumia: 2, tiktok: 3, insta: 2, meta: null, trend: "", cny: 145, kg: 1.2, cj: null,
+      price: 85000, cpa: 12000, jmin: 69990, jmax: 144999, comp: "medium",
+      evidence: "Jumia (29 Sep 2026): HY300 / HY300 Pro listed at ₦69,990–₦144,999, with Pro Max versions up to ₦199,500. 1688 wholesale guide lists an HY300 from ¥59.45; Alibaba lists HY300 Pro around US$20 per unit. ¥145 used here as a cautious figure until you check 1688. Portable projectors are a long-running TikTok 'bedroom cinema' trend.",
+      angles: "Turn your wall into a 100-inch screen; watch the match with the boys; kids' cartoons without fighting over the TV; date night.",
+      risks: "Cheap units advertise '4K' but are 720p native: say 'supports 4K input' only, or expect refunds. Needs mains power (inverter or gen during outages). Check it ships with a UK-type plug or include an adapter. Higher ticket means higher ad cost per sale, so the ₦12,000 figure is a guess."
+    },
+    {
+      id: "creatorkit", cat: "electronics", name: "Content creator kit (wireless lav mic + tripod + ring light)",
+      why: "Nigerian TikTok and Instagram creators, church media teams, small vendors filming products",
+      jumia: 3, tiktok: 2, insta: 2, meta: null, trend: "", cny: null, kg: 0.9, cj: null,
+      price: 25000, jmin: 11699, jmax: 32000, comp: "high",
+      evidence: "Jumia (29 Sep 2026): 998 wireless lavalier mic listings; one at ₦7,999 has 1,115 reviews, the strongest demand signal found in this pass. Ring light + tripod + mic sets sell for ₦11,699–₦32,000.",
+      angles: "Why your videos sound bad (and the ₦25k fix); before/after audio test outdoors in Lagos traffic; 'start your content journey' kit.",
+      risks: "Lav mics alone are cheap on Jumia (from ₦5,900), so the bundle has to be the product. Mic and ring light contain lithium batteries, which some cargo agents charge extra for or refuse on air freight."
+    },
+    {
+      id: "scalp", cat: "electronics", name: "Electric scalp massager (rechargeable, waterproof)",
+      why: "Scalp care, applying hair oil evenly, relaxation gift",
+      jumia: 2, tiktok: 2, insta: 1, meta: null, trend: "", cny: null, kg: 0.35, cj: null,
       price: 22000, jmin: 9994, jmax: 19999, comp: "medium",
-      evidence: "Jumia (29 Sep 2026): 62 listings in Scalp Massagers, most ₦17,499–₦19,999; one 'for applying hair oil' comb listed at ₦39,000. Fewer listings than other gadgets checked. Scalp/hair-growth tools sit inside beauty, TikTok Shop's largest category (22% of US GMV per Ringly 2026 stats).",
+      evidence: "Jumia (29 Sep 2026): 62 listings in Scalp Massagers, most ₦17,499–₦19,999; one 'for applying hair oil' comb listed at ₦39,000. Fewer listings than most gadgets checked.",
       angles: "Hair-oil application demo on natural hair and braids; 'wash day upgrade'; stress relief after work; gift for mum.",
-      risks: "Cheap versions are weak and not truly waterproof: the sample must be tested in the shower. Hair-growth claims can get Meta ads rejected."
+      risks: "Cheap versions aren't truly waterproof: test the sample in the shower. Hair-growth claims can get Meta ads rejected. Lithium battery on air freight."
     },
     {
-      id: "projector", name: "Galaxy / star projector night light",
-      why: "Bedroom ambience, kids' rooms, TikTok room makeovers",
-      amazon: 2, tiktok: 3, meta: null, trend: "", cny: null, kg: 0.5, cj: null,
-      price: 25000, jmin: null, jmax: null, comp: "",
-      evidence: "Named in several 'TikTok made me buy it 2026' collections (TikTok discover pages, Sep 2026). Jumia has dedicated Galaxy Projector and Star Projector pages, but prices weren't returned. Check Jumia by hand.",
-      angles: "Before/after room transformation; kids' bedtime; date-night room setup.",
-      risks: "Needs mains or USB power: pitch the rechargeable version given NEPA outages. Novelty product with low repeat purchase."
+      id: "lunchbox", cat: "food", name: "Electric cooking lunch box (reheats and cooks)",
+      why: "Office workers and students who want home food hot at lunch instead of buying out",
+      jumia: 2, tiktok: 1, insta: 1, meta: null, trend: "", cny: null, kg: 1.1, cj: null,
+      price: 25000, jmin: 10000, jmax: 27000, comp: "medium",
+      evidence: "Jumia (29 Sep 2026): heating-only lunch boxes ₦10,000–₦10,488 (one with 21 reviews); 'cook and reheat' versions ₦24,000–₦27,000.",
+      angles: "Stop spending ₦3,000 a day on lunch (pays for itself in 9 days); jollof from home, hot at 1pm.",
+      risks: "Needs mains power at the office. Heavy (about 1 kg) so freight is a big share of cost. Chinese domestic models ship with Chinese plugs: buy the export (UK plug) version."
     },
     {
-      id: "uvbrush", name: "UV toothbrush sanitiser / holder",
-      why: "Bathroom hygiene, family households",
-      amazon: 1, tiktok: 2, meta: null, trend: "", cny: null, kg: 0.3, cj: null,
-      price: 20000, jmin: null, jmax: null, comp: "",
-      evidence: "Named in 'TikTok made me buy it 2026' collections (Sep 2026). No Jumia price data gathered yet.",
-      angles: "'What's actually on your toothbrush' hook; wall-mounted bathroom glow-up.",
-      risks: "Hygiene claims are hard to prove in an ad. Harder to show a visible result than the other candidates."
+      id: "airfryer", cat: "food", name: "Air fryer kit (silicone liners + oil spray bottle)",
+      why: "Air fryers are spreading in Nigerian homes and owners want less mess and less oil",
+      jumia: 1, tiktok: 2, insta: 1, meta: null, trend: "", cny: null, kg: 0.35, cj: null,
+      price: 15000, jmin: 3800, jmax: 19440, comp: "medium",
+      evidence: "Jumia (29 Sep 2026): liners ₦3,800–₦11,000 (2-pack with 28 reviews at ₦8,199); 5-pack sold at ₦19,440.",
+      angles: "Stop scrubbing your air fryer basket; plantain and chicken with one spray of oil.",
+      risks: "Low price point, so ad cost per sale must stay small. Only works if sold to people who already own an air fryer, which narrows the audience."
     },
     {
-      id: "neckfan", name: "Rechargeable neck fan",
-      why: "Heat, power cuts, commuting in traffic",
-      amazon: 2, tiktok: 3, meta: null, trend: "", cny: null, kg: 0.3, cj: null,
-      price: 22000, jmin: 6883, jmax: 16899, comp: "high",
-      evidence: "Jumia (29 Sep 2026): 128 listings in Personal Necklace Fans; common prices ₦10,080–₦16,899, low end ₦6,883. Evergreen TikTok product.",
-      angles: "Lagos traffic heat; NEPA took light; church/outdoor events.",
-      risks: "Strong fit for the Nigerian problem, but Jumia already sells it cheaply. Only viable with local bulk stock at ₦12k–15k, not CJ."
+      id: "chopper", cat: "food", name: "Rechargeable mini chopper (pepper, onion, garlic)",
+      why: "Nigerian cooking needs pepper and onion chopped daily; blenders are bulky for small amounts",
+      jumia: 2, tiktok: 2, insta: 1, meta: null, trend: "", cny: null, kg: 0.4, cj: null,
+      price: 15000, jmin: 4499, jmax: 15000, comp: "high",
+      evidence: "Jumia (29 Sep 2026): 125 listings in Garlic Tools; wireless 250 ml electric choppers ₦12,000–₦15,000, manual pull-string ones from ₦4,499.",
+      angles: "Pepper for stew in 10 seconds, no blender to wash; ata rodo without burning your hands.",
+      risks: "Crowded. Probably only viable bundled with the air fryer kit as a kitchen set. Lithium battery on air freight."
     },
     {
-      id: "lint", name: "Electric lint remover / fabric shaver",
-      why: "Makes old clothes and sofas look new",
-      amazon: 3, tiktok: 2, meta: null, trend: "", cny: null, kg: 0.25, cj: null,
-      price: 18000, jmin: 3989, jmax: 8894, comp: "high",
-      evidence: "Conair Fabric Shaver on Amazon US Best Sellers (Good Housekeeping Prime Day roundup, 2026). Jumia (29 Sep 2026): 124 listings, ₦3,989–₦8,894; OIPETLUCK listing has 187 reviews.",
-      angles: "Satisfying fuzz-removal demo; rescue your uniforms/ankara.",
-      risks: "Jumia price is less than half what the CJ route needs. Skip."
+      id: "wig", cat: "fashion", name: "Bone-straight human hair wig (closure)",
+      why: "Everyday and occasion hair; Nigerian women buy several a year",
+      jumia: 2, tiktok: 3, insta: 3, meta: null, trend: "", cny: null, kg: 0.3, cj: null,
+      price: 75000, cpa: 10000, jmin: 7500, jmax: 100000, comp: "high",
+      evidence: "Jumia (29 Sep 2026): 1,103 hairpiece listings; human-hair bone-straight closure wigs ₦29,500–₦100,000, synthetic lookalikes from ₦7,500. Instagram wig vendors are one of the largest online selling categories in Nigeria.",
+      angles: "Frontal vs closure explained; wash-and-wear test; 'vendor price vs our price' on camera.",
+      risks: "Quality is the whole product and '100% human hair' is often mislabelled: sample from 2–3 suppliers. Buyers trust established vendors, so you'll need reviews and try-on content fast. The Jumia low end is synthetic, so compare only against human hair."
     },
     {
-      id: "blender", name: "Portable rechargeable blender",
-      why: "Smoothies on the go, gym, office",
-      amazon: 2, tiktok: 2, meta: null, trend: "", cny: null, kg: 0.6, cj: null,
-      price: 22000, jmin: 7776, jmax: 15768, comp: "high",
-      evidence: "Jumia (29 Sep 2026): top listing ₦13,349 with 246 reviews; range ₦7,776–₦15,768. Oraimo sells one locally.",
-      angles: "Gym/office smoothie routine.",
-      risks: "Saturated, and a local brand (Oraimo) competes. Heavier, so freight costs more. Skip."
-    },
-    {
-      id: "curler", name: "Heatless hair curler (satin rod)",
-      why: "Curls without heat damage, overnight styling",
-      amazon: 2, tiktok: 3, meta: null, trend: "", cny: null, kg: 0.15, cj: null,
-      price: 15000, jmin: 5880, jmax: 11999, comp: "high",
-      evidence: "Jumia (29 Sep 2026): ₦5,880–₦11,999, several listings with reviews. Long-running TikTok beauty trend.",
-      angles: "Overnight transformation on relaxed hair and wigs.",
-      risks: "Very light (cheap to fly), but the Jumia ceiling is low. Only works bundled, e.g. with a satin bonnet and scrunchies, as a ₦15k+ kit."
-    },
-    {
-      id: "carvac", name: "Cordless handheld car vacuum",
-      why: "Car cleaning without a mains socket",
-      amazon: 2, tiktok: 2, meta: null, trend: "", cny: null, kg: 0.7, cj: null,
-      price: 25000, jmin: 6480, jmax: 25588, comp: "high",
-      evidence: "Jumia (29 Sep 2026): 229 car vacuum listings, ₦6,480 at the low end, stronger models ₦18,600–₦25,588.",
-      angles: "Uber/Bolt drivers; kids' snacks in the back seat.",
-      risks: "Heavy for air freight. Cheap versions have weak suction and draw refunds. Only the premium tier has room."
+      id: "waist", cat: "fashion", name: "Waist trainer / tummy-control shapewear",
+      why: "Instant waist shape under dresses and asoebi; postpartum",
+      jumia: 2, tiktok: 2, insta: 3, meta: null, trend: "", cny: null, kg: 0.3, cj: null,
+      price: 15000, jmin: 3600, jmax: 22500, comp: "high",
+      evidence: "Jumia (29 Sep 2026): 459 women's shapewear listings, ₦3,600–₦12,999 for most, waist-trainer corsets up to ₦22,500.",
+      angles: "Asoebi fitting before and after; the 3-band trainer that doesn't roll down.",
+      risks: "Sizing drives returns: publish a clear size chart. Cheap versions roll and pinch. Huge Instagram competition, so the angle and content have to stand out."
     }
   ];
 
   let state = load();
-  let sortKey = "score", sortDir = -1, selected = null;
+  let sortKey = "score", sortDir = -1, selected = null, catFilter = "";
+  const CATS = { food: "Food", electronics: "Electronics", fashion: "Fashion" };
 
   function load() {
     try {
@@ -291,11 +324,12 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
     } else if (isNum(p.cny) && p.cny > 0) {
       landed = p.cny * a.cny * (1 + a.wfee / 100) + (isNum(p.kg) ? p.kg : 0) * a.perkg + a.local; route = "1688";
     }
-    const margin = (landed != null && isNum(p.price) && p.price > 0) ? (p.price - landed - a.cpa) / p.price : null;
+    const cpa = isNum(p.cpa) ? p.cpa : a.cpa;
+    const margin = (landed != null && isNum(p.price) && p.price > 0) ? (p.price - landed - cpa) / p.price : null;
 
     const sig = (v) => isNum(v) ? v : 0;
     const trendPts = { up: 3, flat: 2, down: 0 }[p.trend] || 0;
-    const demand = sig(p.amazon) + sig(p.tiktok) + sig(p.meta) + trendPts;
+    const demand = sig(p.jumia) + sig(p.tiktok) + sig(p.insta) + sig(p.meta) + trendPts;
     const marginPts = margin == null ? 0 : margin >= 0.3 ? 5 : margin >= 0.2 ? 3 : margin >= 0.1 ? 1 : 0;
     const compPts = { low: 3, medium: 2, high: 0 }[p.comp] || 0;
     const score = demand + marginPts + compPts;
@@ -312,10 +346,10 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
     if (undercut) { verdict = "Jumia undercuts"; tone = "bad"; rank = 0; }
     else if (margin != null && margin < 0.1) { verdict = "Margin too thin"; tone = "bad"; rank = 1; }
     else if (missing.length) { verdict = "Needs data"; tone = "mid"; rank = 2; }
-    else if (score >= 15) { verdict = "Order sample"; tone = "good"; rank = 4; }
+    else if (score >= 17) { verdict = "Order sample"; tone = "good"; rank = 4; }
     else { verdict = "Maybe"; tone = "mid"; rank = 3; }
 
-    return { landed, route, margin, demand, score, verdict, tone, rank, missing, typical };
+    return { landed, route, margin, cpa, demand, score, verdict, tone, rank, missing, typical };
   }
 
   function dots(n) {
@@ -327,9 +361,9 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
   }
 
   function render() {
-    const rows = state.items.map((p) => Object.assign({ p }, derive(p)));
+    const rows = state.items.filter((p) => !catFilter || p.cat === catFilter).map((p) => Object.assign({ p }, derive(p)));
     const val = (r) => ({
-      name: r.p.name.toLowerCase(), demand: r.demand, jumiaMax: r.typical ?? -1, price: r.p.price ?? -1,
+      name: r.p.name.toLowerCase(), cat: r.p.cat || "", demand: r.demand, jumiaMax: r.typical ?? -1, price: r.p.price ?? -1,
       landed: r.landed ?? Infinity, margin: r.margin ?? -Infinity,
       comp: { low: 3, medium: 2, high: 1 }[r.p.comp] || 0, score: r.score, verdictRank: r.rank
     })[sortKey];
@@ -351,13 +385,14 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
       const marginCell = r.margin == null ? '<span class="sub">needs cost</span>' : Math.round(r.margin * 100) + "%";
       return '<tr data-id="' + esc(p.id) + '"' + (p.id === selected ? ' class="selected"' : "") + ">" +
         "<td><strong>" + esc(p.name) + '</strong><span class="sub">' + esc(p.why) + "</span></td>" +
-        '<td class="num">' + r.demand + "/12</td>" +
+        "<td>" + esc(CATS[r.p.cat] || "") + "</td>" +
+        '<td class="num">' + r.demand + "/15</td>" +
         '<td class="num">' + jumia + "</td>" +
         '<td class="num">' + naira(p.price) + "</td>" +
         '<td class="num">' + (r.landed == null ? '<span class="sub">not checked</span>' : naira(r.landed) + '<span class="sub">via ' + r.route + "</span>") + "</td>" +
         '<td class="num">' + marginCell + "</td>" +
         "<td>" + (p.comp ? esc(p.comp[0].toUpperCase() + p.comp.slice(1)) : '<span class="sub">not checked</span>') + "</td>" +
-        '<td class="num"><strong>' + r.score + "</strong>/20</td>" +
+        '<td class="num"><strong>' + r.score + "</strong>/23</td>" +
         '<td><span class="pill ' + r.tone + '">' + r.verdict + "</span></td></tr>";
     }).join("");
 
@@ -376,7 +411,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
       (r.missing.length ? ' <span class="sub" style="display:inline">Still missing: ' + r.missing.join(", ") + "</span>" : "") +
       "<dl>" +
       "<dt>Why people buy it</dt><dd>" + esc(p.why) + "</dd>" +
-      "<dt>Signals</dt><dd>Amazon " + dots(p.amazon) + " &nbsp; TikTok " + dots(p.tiktok) + " &nbsp; Meta " + (isNum(p.meta) ? dots(p.meta) : '<span class="sub" style="display:inline">not checked</span>') + " &nbsp; Trend: " + trendTxt + "</dd>" +
+      "<dt>Signals</dt><dd>Jumia " + dots(p.jumia) + " &nbsp; TikTok " + dots(p.tiktok) + " &nbsp; Instagram " + dots(p.insta) + " &nbsp; Meta " + (isNum(p.meta) ? dots(p.meta) : '<span class="sub" style="display:inline">not checked</span>') + " &nbsp; Trend: " + trendTxt + "</dd>" +
       "<dt>Evidence of demand</dt><dd>" + esc(p.evidence) + "</dd>" +
       "<dt>Ad angles / hooks</dt><dd>" + esc(p.angles) + "</dd>" +
       "<dt>Problems / risks</dt><dd>" + esc(p.risks) + "</dd>" +
@@ -384,9 +419,9 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
   }
 
   // Form
-  const fields = ["name", "why", "amazon", "tiktok", "meta", "trend", "cny", "kg", "cj", "price", "jmin", "jmax", "comp", "evidence", "angles", "risks"];
-  const numeric = new Set(["amazon", "tiktok", "meta", "cny", "kg", "cj", "price", "jmin", "jmax"]);
-  ["amazon", "tiktok", "meta"].forEach((k) => {
+  const fields = ["name", "cat", "why", "jumia", "tiktok", "insta", "meta", "trend", "cny", "kg", "cj", "price", "cpa", "jmin", "jmax", "comp", "evidence", "angles", "risks"];
+  const numeric = new Set(["jumia", "tiktok", "insta", "meta", "cny", "kg", "cj", "price", "cpa", "jmin", "jmax"]);
+  ["jumia", "tiktok", "insta", "meta"].forEach((k) => {
     $("f-" + k).innerHTML = '<option value="">Not checked</option>' +
       ["0 · none", "1 · weak", "2 · clear", "3 · strong"].map((t, i) => '<option value="' + i + '">' + t + "</option>").join("");
   });
@@ -394,6 +429,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
   function fillForm(p) {
     $("f-id").value = p ? p.id : "";
     fields.forEach((k) => { $("f-" + k).value = p && p[k] != null ? p[k] : ""; });
+    if (!p) $("f-cat").value = catFilter || "food";
     $("deleteBtn").hidden = !p;
   }
 
@@ -457,11 +493,11 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
   });
 
   $("exportBtn").addEventListener("click", () => {
-    const head = ["Product", "Why people buy", "Amazon", "TikTok", "Meta", "Google trend", "1688 ¥", "Weight kg", "CJ US$", "Your price ₦", "Jumia low ₦", "Jumia high ₦", "Competition", "Landed ₦", "Margin %", "Score", "Verdict", "Evidence", "Ad angles", "Risks"];
+    const head = ["Product", "Category", "Why people buy", "Jumia", "TikTok", "Instagram", "Meta", "Google trend NG", "1688 ¥", "Weight kg", "CJ US$", "Your price ₦", "Ad cost ₦", "Jumia low ₦", "Jumia high ₦", "Competition", "Landed ₦", "Margin %", "Score", "Verdict", "Evidence", "Ad angles", "Risks"];
     const cell = (v) => '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
     const lines = [head.map(cell).join(",")].concat(state.items.map((p) => {
       const r = derive(p);
-      return [p.name, p.why, p.amazon, p.tiktok, p.meta, p.trend, p.cny, p.kg, p.cj, p.price, p.jmin, p.jmax, p.comp,
+      return [p.name, CATS[p.cat] || "", p.why, p.jumia, p.tiktok, p.insta, p.meta, p.trend, p.cny, p.kg, p.cj, p.price, r.cpa, p.jmin, p.jmax, p.comp,
         r.landed == null ? "" : Math.round(r.landed), r.margin == null ? "" : Math.round(r.margin * 100), r.score, r.verdict,
         p.evidence, p.angles, p.risks].map(cell).join(",");
     }));
@@ -472,6 +508,12 @@ footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
+
+  document.querySelectorAll("#chips button").forEach((b) => b.addEventListener("click", () => {
+    catFilter = b.dataset.cat;
+    document.querySelectorAll("#chips button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    render();
+  }));
 
   fillForm(null);
   render();
